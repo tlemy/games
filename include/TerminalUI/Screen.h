@@ -16,6 +16,13 @@ struct Square
     struct Color col;
 };
 
+struct Shape 
+{
+    struct Square** mtrx;
+    int w;
+    int h
+};
+
 int drawSquare(struct Square rect, FILE* fptr);
 
 int clearScreen(FILE* fptr);
@@ -31,3 +38,11 @@ int resetColor(FILE* fptr);
 struct Color makeColor(int r, int g, int b);
 
 struct Square makeSquare(int x, int y, struct Color col);
+
+struct Shape makeShape(int w, int h);
+
+int addRowToShape(struct Shape* shp);
+
+int addSquareToRowShape(struct Shape* shp, struct Square sqr, int r);
+
+int deleteShape(struct Shape shp);

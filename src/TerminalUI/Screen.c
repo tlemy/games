@@ -94,10 +94,54 @@ struct Color makeColor(int r, int g, int b)
 
 struct Square makeSquare(int x, int y, struct Color col) 
 {
-    struct Square rect;
-    rect.x = x;
-    rect.y = y;
-    rect.col = col;
+    struct Square square;
+    square.x = x;
+    square.y = y;
+    square.col = col;
 
-    return rect;
+    return square;
+}
+
+struct Shape makeShape(int w, int h) 
+{
+    struct Shape shape;
+    shape.w = w;
+    shape.h = h;
+    shape.mtrx = (struct Square**) malloc(sizeof(struct Square) * w * h);
+
+    return shape;
+}
+
+int addRowToShape(struct Shape* shp) 
+{
+
+}
+
+int addSquareToRowShape(struct Shape* shp, struct Square sqr, int r) 
+{
+    
+}
+
+int deleteShape(struct Shape shp) 
+{
+    if (shp.h == 0) 
+    {
+        return 1;
+    }
+
+    if (shp.mtrx == NULL) 
+    {
+        return -1;
+    }
+    
+    for (int r = 0; r < shp.h; r++) 
+    {
+        if (shp.mtrx[r] == NULL) 
+        {
+            return -1;
+        }
+        free(shp.mtrx[r]);
+    }
+
+    return 0;
 }

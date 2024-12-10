@@ -11,7 +11,7 @@ int main()
     const struct Color colors[numColors] = {red, green, blue, yellow};
     
     int colorIdx = 0;
-    struct Square sqr = makeSquare(0, 0, colors[colorIdx]);
+    struct Square sqr = makeSquare(1, 1, colors[colorIdx]);
     
     while (true) 
     {
@@ -54,10 +54,22 @@ int main()
         }
 
         ++colorIdx;
+        sqr.x += 2;
+        ++sqr.y;
 
         if (colorIdx >= numColors) 
         {
             colorIdx = 0;
+        }
+
+        if (sqr.x >= 21) 
+        {
+            sqr.x = 1;
+        }
+
+        if (sqr.y >= 11) 
+        {
+            sqr.y = 1;
         }
 
         sqr.col = colors[colorIdx];  
