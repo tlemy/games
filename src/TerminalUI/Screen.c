@@ -1,5 +1,4 @@
 #include "../../include/TerminalUI/Screen.h"
-#include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -13,6 +12,7 @@
 #define RESET_CURSOR_POSITION "\033[2J\033[H" // move cursor to top left
 #define SET_COLOR "\033[38;2;%d;%d;%dm" // (r, g, b)
 #define RESET_COLOR "\033[0m"
+#define DRAW_BORDER "\033[%d;%dH#" // (y, x)
 
 // private 
 
@@ -148,4 +148,52 @@ int deleteShape(struct Shape *shp)
         shp = next;
     }
     return len;
+}
+
+int drawBorder(int x1, int y1, int x2, int y2, FILE *fptr) 
+{
+    int diffX = x2 - x1;
+    int diffY = y2 - y1;
+
+    if (diffX == 0 && diffY != 0) 
+    {
+        int x = x1;
+
+        for (int y = y1; y <= y2; y++) 
+        {
+            char input[32];
+            int len = sprintf(input, DRAW_BORDER, y, x);
+
+            if (len != strlen(input)) 
+            {
+                return -1;
+            }
+
+            if (writeToFptr(input, fptr) != 0) 
+            {
+                return -1;
+            }
+        }
+    }
+    else if (diffX != 0 && diffY == 0) 
+    {
+        int y = y1;
+
+        for (int x = x1; x < x2; x++) 
+        {
+            char input[32];
+            int len = sprintf(input, DRAW_BORDER, y, x);
+
+            if (len != strlen(input)) 
+            {
+                return -1;
+            }
+
+            if (writeToFptr(input, fptr) != 0)
+            {
+                return -1;
+            }
+        }
+    }
+    return 0;
 }

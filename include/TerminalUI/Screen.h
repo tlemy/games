@@ -44,3 +44,5 @@ struct Shape* makeShape(struct Square sqr);
 struct Shape* addSquareToShape(struct Shape* shp, struct Square sqr);
 
 int deleteShape(struct Shape* shp);
+
+int drawBorder(int x1, int y1, int x2, int y2, FILE *fptr);

@@ -1,7 +1,6 @@
 #include "../../include/TerminalUI/Screen.h"
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
-#include <stdio.h>
 
 #define TEST_FILE_NAME "ScreenTest.txt"
 
@@ -94,6 +93,11 @@ static void test_whenShapeLinkedListHasMulitpleElements_deleteShape_deletesLinke
     CU_ASSERT_NOT_EQUAL(shp->nxt, NULL);
     CU_ASSERT_EQUAL(deleteShape(shp), 3);
     CU_ASSERT_EQUAL(shp->nxt, NULL);
+}
+
+static void test_whenInputStreamValid_drawBorder_returns0() 
+{
+    CU_ASSERT_EQUAL(drawBorder(0, 0, 10, 0, fptr), 0);
 }
 
 int setup() 
@@ -194,6 +198,12 @@ int main()
     }
 
     if (CU_add_test(pSuite, "deletes shape linked list when deleteShape", test_whenShapeLinkedListHasMulitpleElements_deleteShape_deletesLinkedList) == NULL) 
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if (CU_add_test(pSuite, "draws border when file pointer is valid", test_whenInputStreamValid_drawBorder_returns0) == NULL) 
     {
         CU_cleanup_registry();
         return CU_get_error();
