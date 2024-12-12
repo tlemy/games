@@ -1,4 +1,9 @@
 #include "../../include/TerminalUI/Screen.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <assert.h>
 
 #define SQUARE "\u2593\u2593\0" // 2 ANSI full block characters
 
@@ -94,54 +99,42 @@ struct Color makeColor(int r, int g, int b)
 
 struct Square makeSquare(int x, int y, struct Color col) 
 {
-    struct Square square;
-    square.x = x;
-    square.y = y;
-    square.col = col;
+    struct Square sqr;
+    sqr.x = x;
+    sqr.y = y;
+    sqr.col = col;
 
-    return square;
+    return sqr;
 }
 
-struct Shape makeShape(int w, int h) 
+struct Shape makeShape(struct Square sqr) 
 {
-    struct Shape shape;
-    shape.w = w;
-    shape.h = h;
-    shape.mtrx = (struct Square**) malloc(sizeof(struct Square) * w * h);
+    struct Shape shp;
+    shp.sqr = sqr;
+    shp.idx = 0;
+    shp.nxt = NULL;
 
-    return shape;
+    return shp;
 }
 
-int addRowToShape(struct Shape* shp) 
+struct Shape addSquareToShape(struct Shape shp, struct Square sqr) 
 {
+    shp.nxt = (struct Shape*) malloc(sizeof(struct Shape));
+    shp.nxt->idx = shp.idx + 1;
+    shp.nxt->sqr = sqr;
+    shp.nxt->nxt = NULL;
 
-}
-
-int addSquareToRowShape(struct Shape* shp, struct Square sqr, int r) 
-{
-    
+    return shp;
 }
 
 int deleteShape(struct Shape shp) 
 {
-    if (shp.h == 0) 
-    {
-        return 1;
-    }
+    struct Shape* curr = shp.nxt;
 
-    if (shp.mtrx == NULL) 
+    while (curr != NULL) 
     {
-        return -1;
+        struct Shape* nxt = curr->nxt;
+        free(curr);
     }
-    
-    for (int r = 0; r < shp.h; r++) 
-    {
-        if (shp.mtrx[r] == NULL) 
-        {
-            return -1;
-        }
-        free(shp.mtrx[r]);
-    }
-
     return 0;
 }

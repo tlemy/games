@@ -1,4 +1,6 @@
 #include "../../include/TerminalUI/Screen.h"
+#include <stdio.h>
+#include <stdbool.h>
 #include <unistd.h>
 
 int main()

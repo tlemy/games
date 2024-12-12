@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
 
 struct Color 
 {
@@ -16,11 +14,13 @@ struct Square
     struct Color col;
 };
 
+struct Shape;
+
 struct Shape 
 {
-    struct Square** mtrx;
-    int w;
-    int h
+    struct Square sqr;
+    int idx;
+    struct Shape* nxt;
 };
 
 int drawSquare(struct Square rect, FILE* fptr);
@@ -39,10 +39,8 @@ struct Color makeColor(int r, int g, int b);
 
 struct Square makeSquare(int x, int y, struct Color col);
 
-struct Shape makeShape(int w, int h);
+struct Shape makeShape(struct Square sqr);
 
-int addRowToShape(struct Shape* shp);
-
-int addSquareToRowShape(struct Shape* shp, struct Square sqr, int r);
+struct Shape addSquareToShape(struct Shape shp, struct Square sqr);
 
 int deleteShape(struct Shape shp);
