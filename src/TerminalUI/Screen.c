@@ -107,34 +107,45 @@ struct Square makeSquare(int x, int y, struct Color col)
     return sqr;
 }
 
-struct Shape makeShape(struct Square sqr) 
+struct Shape* makeShape(struct Square sqr) 
 {
-    struct Shape shp;
-    shp.sqr = sqr;
-    shp.idx = 0;
-    shp.nxt = NULL;
+    struct Shape* shp = (struct Shape*) malloc(sizeof(struct Shape));
+    shp->sqr = sqr;
+    shp->idx = 0;
+    shp->nxt = NULL;
 
     return shp;
 }
 
-struct Shape addSquareToShape(struct Shape shp, struct Square sqr) 
+struct Shape* addSquareToShape(struct Shape* shp, struct Square sqr) 
 {
-    shp.nxt = (struct Shape*) malloc(sizeof(struct Shape));
-    shp.nxt->idx = shp.idx + 1;
-    shp.nxt->sqr = sqr;
-    shp.nxt->nxt = NULL;
+    struct Shape* last = shp;
 
-    return shp;
-}
-
-int deleteShape(struct Shape shp) 
-{
-    struct Shape* curr = shp.nxt;
-
-    while (curr != NULL) 
+    while (last->nxt != NULL) 
     {
-        struct Shape* nxt = curr->nxt;
-        free(curr);
+        last = last->nxt;
     }
-    return 0;
+
+    last->nxt = (struct Shape*) malloc(sizeof(struct Shape));
+    last->nxt->idx = last->idx + 1;
+    last->nxt->sqr = sqr;
+    last->nxt->nxt = NULL;
+
+    return shp;
+}
+
+int deleteShape(struct Shape *shp) 
+{
+    int len = 0;
+
+    while (shp != NULL) 
+    {
+        ++len; 
+
+        struct Shape* next = shp->nxt;
+        shp->nxt = NULL;
+        free(shp);
+        shp = next;
+    }
+    return len;
 }

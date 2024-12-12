@@ -7,7 +7,7 @@
 
 FILE *fptr;
 
-static struct Shape shp;
+static struct Shape* shp;
 
 static void test_whenInputStreamValid_drawSquare_returns0() 
 {
@@ -54,33 +54,46 @@ static void test_whenInputIsValid_makeShape_returnsShape()
 {
     shp = makeShape(makeSquare(1, 2, makeColor(3, 4, 5)));
 
-    CU_ASSERT_EQUAL(shp.sqr.x, 1);
-    CU_ASSERT_EQUAL(shp.sqr.y, 2);
-    CU_ASSERT_EQUAL(shp.sqr.col.r, 3);
-    CU_ASSERT_EQUAL(shp.sqr.col.g, 4);
-    CU_ASSERT_EQUAL(shp.sqr.col.b, 5);
-    CU_ASSERT_EQUAL(shp.idx, 0);
-    CU_ASSERT_PTR_NULL(shp.nxt);
+    CU_ASSERT_EQUAL(shp->sqr.x, 1);
+    CU_ASSERT_EQUAL(shp->sqr.y, 2);
+    CU_ASSERT_EQUAL(shp->sqr.col.r, 3);
+    CU_ASSERT_EQUAL(shp->sqr.col.g, 4);
+    CU_ASSERT_EQUAL(shp->sqr.col.b, 5);
+    CU_ASSERT_EQUAL(shp->idx, 0);
+    CU_ASSERT_PTR_NULL(shp->nxt);
 }
 
 static void test_whenInputIsValid_addSquareToShape_squareIsAdded() 
 {
     shp = addSquareToShape(shp, makeSquare(6, 7, makeColor(8, 9, 10)));
 
-    CU_ASSERT_EQUAL(shp.nxt->sqr.x, 6);
-    CU_ASSERT_EQUAL(shp.nxt->sqr.y, 7);
-    CU_ASSERT_EQUAL(shp.nxt->sqr.col.r, 8);
-    CU_ASSERT_EQUAL(shp.nxt->sqr.col.g, 9);
-    CU_ASSERT_EQUAL(shp.nxt->sqr.col.b, 10);
-    CU_ASSERT_EQUAL(shp.nxt->idx, 1);
-    CU_ASSERT_PTR_NULL(shp.nxt->nxt);
+    CU_ASSERT_EQUAL(shp->nxt->sqr.x, 6);
+    CU_ASSERT_EQUAL(shp->nxt->sqr.y, 7);
+    CU_ASSERT_EQUAL(shp->nxt->sqr.col.r, 8);
+    CU_ASSERT_EQUAL(shp->nxt->sqr.col.g, 9);
+    CU_ASSERT_EQUAL(shp->nxt->sqr.col.b, 10);
+    CU_ASSERT_EQUAL(shp->nxt->idx, 1);
+    CU_ASSERT_PTR_NULL(shp->nxt->nxt);
+}
+
+static void test_whenInputIsValid_addSquareToShape_secondSquareIsAdded() 
+{
+    shp = addSquareToShape(shp, makeSquare(11, 12, makeColor(13, 14, 15)));
+
+    CU_ASSERT_EQUAL(shp->nxt->nxt->sqr.x, 11);
+    CU_ASSERT_EQUAL(shp->nxt->nxt->sqr.y, 12);
+    CU_ASSERT_EQUAL(shp->nxt->nxt->sqr.col.r, 13);
+    CU_ASSERT_EQUAL(shp->nxt->nxt->sqr.col.g, 14);
+    CU_ASSERT_EQUAL(shp->nxt->nxt->sqr.col.b, 15);
+    CU_ASSERT_EQUAL(shp->nxt->nxt->idx, 2);
+    CU_ASSERT_PTR_NULL(shp->nxt->nxt->nxt);
 }
 
 static void test_whenShapeLinkedListHasMulitpleElements_deleteShape_deletesLinkedList()
 {
-    CU_ASSERT_NOT_EQUAL(shp.nxt, NULL);
-    CU_ASSERT_EQUAL(deleteShape(shp), 0);
-    CU_ASSERT_EQUAL(shp.nxt, NULL);
+    CU_ASSERT_NOT_EQUAL(shp->nxt, NULL);
+    CU_ASSERT_EQUAL(deleteShape(shp), 3);
+    CU_ASSERT_EQUAL(shp->nxt, NULL);
 }
 
 int setup() 
@@ -169,6 +182,12 @@ int main()
     }
 
     if (CU_add_test(pSuite, "adds correct square when addSquareToShape", test_whenInputIsValid_addSquareToShape_squareIsAdded) == NULL) 
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if (CU_add_test(pSuite, "adds correct second square when addSquareToShape", test_whenInputIsValid_addSquareToShape_secondSquareIsAdded) == NULL) 
     {
         CU_cleanup_registry();
         return CU_get_error();

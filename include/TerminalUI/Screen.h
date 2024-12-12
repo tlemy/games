@@ -39,8 +39,8 @@ struct Color makeColor(int r, int g, int b);
 
 struct Square makeSquare(int x, int y, struct Color col);
 
-struct Shape makeShape(struct Square sqr);
+struct Shape* makeShape(struct Square sqr);
 
-struct Shape addSquareToShape(struct Shape shp, struct Square sqr);
+struct Shape* addSquareToShape(struct Shape* shp, struct Square sqr);
 
-int deleteShape(struct Shape shp);
+int deleteShape(struct Shape* shp);
